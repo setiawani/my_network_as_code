@@ -26,7 +26,6 @@ svi_interfaces: {
    'redirects': true,
    'description': 'routing to acme-sea-asa1'
  },
-svi_interfaces: {
   '1001': {
     'ip': '10.255.254.1',
     'mask': '255.255.255.0',
