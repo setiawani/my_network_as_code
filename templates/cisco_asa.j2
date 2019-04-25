@@ -2,7 +2,7 @@ hostname {{ inventory_hostname }}
 !
 {% for interface, data in ethernet_interfaces.items() %}
 interface {{ interface }}
-{% include 'generic_l3_interface_configs.j2' ignore missing %}
+ {% include 'generic_l3_interface_configs.j2' ignore missing %}
  nameif {{ data.nameif }}
  security-level {{ data.security_level }}
  ip address {{ data.ip }} {{ data.mask }}
