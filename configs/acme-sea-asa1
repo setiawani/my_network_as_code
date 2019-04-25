@@ -1,20 +1,24 @@
-hostname {{ inventory_hostname }}
+hostname acme-sea-asa1
 !
-{% for interface, data in ethernet_interfaces.items() %}
-interface {{ interface }}
- {% include 'generic_l3_interface_configs.j2' ignore missing %}
- nameif {{ data.nameif }}
- security-level {{ data.security_level }}
- ip address {{ data.ip }} {{ data.mask }}
+interface GigabitEthernet0/0
+  description to acme-sea-rtr1
+ nameif outside
+ security-level 0
+ ip address 203.0.113.2 255.255.255.192
  no shutdown
 !
-{% endfor %}
+interface GigabitEthernet0/1
+  description to acme-sea-nxos1
+ nameif inside
+ security-level 90
+ ip address 10.255.255.1 255.255.255.240
+ no shutdown
+!
 !
 nat (inside,outside) source dynamic any interface
 !
-{% for prefix, data in routes.items() %}
-route {{ data.nameif }} {{ prefix }} {{ data.destination }} 1
-{% endfor %}
+route outside 0.0.0.0 0.0.0.0 203.0.113.1 1
+route inside 10.0.0.0 255.0.0.0 10.255.255.2 1
 !
 user-identity default-domain LOCAL
 aaa authentication ssh console LOCAL
@@ -29,9 +33,7 @@ ssh key-exchange group dh-group14-sha1
 !
 console timeout 0
 !
-{% for user, data in users.items() %}
-username {{ user }} password {{ data.password }} privilege {{ data.privilege }}
-{% endfor %}
+username ignw password ignw privilege 15
 !
 class-map inspection_default
  match default-inspection-traffic

@@ -1,0 +1,16 @@
+- name: Deploy Cisco ASA Configurations
+  connection: local
+  hosts: cisco-asa
+  gather_facts: no
+  vars:
+    creds:
+      host: "{{ ansible_host }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      authorize: yes
+      auth_pass: "{{ enable_password }}"
+  tags: asa
+  tasks:
+    - asa_config:
+        provider: "{{ creds }}"
+        src: "configs/{{ inventory_hostname }}"
