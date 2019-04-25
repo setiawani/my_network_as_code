@@ -1,0 +1,54 @@
+---
+- name: Validate "Core" to "Internet" Reachability
+  connection: local
+  hosts: acme-sea-rtr1
+  gather_facts: no
+  vars:
+    creds:
+      host: "{{ ansible_host }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+    test_success_ips:
+      - 203.0.113.2
+    test_fail_ips:
+      - 10.255.255.2
+  tasks:
+    - name: Test Success Pings
+      ios_ping:
+        provider: "{{ creds }}"
+        dest: "{{ item }}"
+      with_items: "{{ test_success_ips }}"
+    - name: Test Fail Pings
+      ios_ping:
+        provider: "{{ creds }}"
+        dest: "{{ item }}"
+        state: absent
+        count: 4
+      with_items: "{{ test_fail_ips }}"
+
+
+
+- name: Validate "Core" & "Internet" Reachability from Firewall
+  connection: local
+  hosts: acme-sea-asa1
+  gather_facts: no
+  vars:
+    creds:
+      host: "{{ ansible_host }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      authorize: yes
+      auth_pass: "{{ enable_password }}"
+    test_ips:
+      - 8.8.8.8
+      - 10.255.255.2
+  tasks:
+  - asa_command:
+      provider: "{{ creds }}"
+      commands:
+        - "ping {{ item }}"
+    register: ping_output
+    failed_when:
+      - "'(5/5)' not in ping_output.stdout_lines[0][-1]"
+      - "'(4/5)' not in ping_output.stdout_lines[0][-1]"
+    with_items: "{{ test_ips }}"

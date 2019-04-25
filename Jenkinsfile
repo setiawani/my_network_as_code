@@ -27,6 +27,7 @@ node {
     stage ('Unit Testing') {
         // Do some kind of "linting" on our code to make sure we didn't bugger anything up too badly
         sh 'ansible-playbook deploy_configurations.yaml -e "ansible_python_interpreter=jenkins_build/bin/python" --syntax-check'
+        sh 'ansible-playbook validate_configurations.yaml -e "ansible_python_interpreter=jenkins_build/bin/python" --syntax-check'
     }
 
     stage ('Deploy Configurations to Dev') {
@@ -36,6 +37,8 @@ node {
 
     stage ('Functional/Integration Testing') {
         // Ping stuff and make sure we didn't blow up dev!
+        sh 'ansible-playbook deploy_configurations.yaml -e "ansible_python_interpreter=jenkins_build/bin/python"'
+
     }
 
     stage ('Promote Configurations to Production') {
