@@ -6,9 +6,11 @@ features:
 l2_vlans: {
   '1000': {
     'name': 'routing_to_acme_sea_asa1'
- }
+  }
+  '1001': {
+    'name': 'my new vlan'
+  }
 }
-
 l2_ethernet_interfaces: {
  'Ethernet1/2': {
    'mode': 'trunk',
@@ -24,6 +26,13 @@ svi_interfaces: {
    'redirects': true,
    'description': 'routing to acme-sea-asa1'
  }
+svi_interfaces: {
+  '1001': {
+    'ip': '10.255.254.1',
+    'mask': '255.255.255.0',
+    'redirects': true,
+    'description': 'my new vlan'
+  }
 }
 
 routes: {

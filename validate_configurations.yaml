@@ -42,6 +42,7 @@
     test_ips:
       - 8.8.8.8
       - 10.255.255.2
+      - 10.255.254.1
   tasks:
   - asa_command:
       provider: "{{ creds }}"
