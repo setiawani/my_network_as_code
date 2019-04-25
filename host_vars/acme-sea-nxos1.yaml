@@ -8,7 +8,7 @@ l2_vlans: {
     'name': 'routing_to_acme_sea_asa1'
   },
   '1001': {
-    'name': 'my new vlan'
+    'name': 'my_new_vlan'
   }
 }
 l2_ethernet_interfaces: {
