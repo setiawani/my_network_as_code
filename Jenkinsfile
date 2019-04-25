@@ -25,5 +25,10 @@ node {
 
     stage ('Production Functional/Integration Testing') {
         // Ping stuff and make sure we didn't blow up prod!
+
+    stage ('Checkout Repository') {
+        deleteDir()
+        checkout scm
     }
+  }
 }
