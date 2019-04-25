@@ -3,6 +3,7 @@ node {
     deleteDir()
     checkout scm
     }
+
     stage ('Setup environment') {
         // Push the configurations out to the dev environment
         sh 'python3 -m venv jenkins_build'
@@ -14,9 +15,11 @@ node {
         sh '''sed -i -e 's/dist-/site-/g' ansible.cfg'''
         sh '''sed -i -e 's/\\/usr\\/bin/jenkins_build\\/bin/g' ansible.cfg'''
     }
+
     stage ('Validate generate Configuration playbook') {
     sh 'ansible-playbook generate_configuration.yaml -e "ansible_python_interpreter=jenkins_build/bin/python" --syntax-check'
     }
+    
     stage ('Render Configurations') {
     sh 'ansible-playbook generate_configuration.yaml -e "ansible_python_interpreter=jenkins_build/bin/python"
     }
