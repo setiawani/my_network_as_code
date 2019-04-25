@@ -10,7 +10,7 @@ node {
 
     stage ('Unit Testing') {
         // Do some kind of "linting" on our code to make sure we didn't bugger anything up too badly
-        sh 'ansible-playbook depoy_configurations.yaml --syntax-check'
+        sh 'ansible-playbook deploy_configurations.yaml --syntax-check'
     }
 
     stage ('Deploy Configurations to Dev') {
